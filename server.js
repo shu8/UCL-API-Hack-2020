@@ -103,12 +103,37 @@ app.get('/api/societies', (req, res) => {
   });
 });
 
-app.get('/api/societies/:id', (req, res) => {
+app.get('/api/societies/:id(\\d+)', (req, res) => {
   connection.query('SELECT * FROM societies WHERE id=?', [req.param.id], (error, results) => {
     if (error) throw error;
 
     res.json(results[0]);
   });
 })
+
+app.get('/api/events', (res, req) => {
+  connection.query('SELECT * FROM events ORDER BY datetime DESC', (error, results) => {
+    if (error) throw error;
+
+    res.json(results);
+  })
+})
+
+app.get('/events/:id(\\d+)', (res, req) => {
+  connection.query('SELECT * FROM events WHERE id=? ORDER BY datetime DESC', [req.param.id], (error, results) => {
+    if (error) throw error;
+
+    res.json(results[0]);
+  })
+})
+
+app.get('/socities/:id(\\d+)/events', (res, req) => {
+  connection.query('SELECT * FROM events WHERE society_id=? ORDER BY datetime DESC', [req.param.id], (error, results) => {
+    if (error) throw error;
+
+    res.json(results);
+  })
+})
+
 
 app.listen(port, () => console.log(`UCL API Hack 2020 app listening on port ${port}!`));
