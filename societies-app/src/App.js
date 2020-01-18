@@ -6,7 +6,8 @@ import {
   Link
 } from "react-router-dom";
 
-import Societies from "./Societies"
+import Home from "./Home";
+import Societies from "./Societies";
 import Events from "./Events";
 
 export default function SocietiesApp() {
@@ -40,14 +41,5 @@ export default function SocietiesApp() {
         </Switch>
       </div>
     </Router>
-  );
-}
-
-// You can think of these components as "pages" in your app
-function Home() {
-  return (
-    <div>
-      <h2>Home</h2>
-    </div>
   );
 }
