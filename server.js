@@ -7,14 +7,13 @@ const util = require('util');
 const moment = require('moment');
 const nodeRequest = require('request');
 
-const mysql = require('mysql');
-const connection = mysql.createConnection({
+app.locals.connection = require('mysql').createConnection({
   host: '0.0.0.0',
-  user: 'dbuser',
-  password: 'password',
+  user: 'root',
+  password: '',
   database: 'uclapisoc'
 });
-connection.connect();
+app.locals.connection.connect();
 
 const client_id = '2661579838577730.2946903875356405';
 const client_secret = '24b4d9c7d9a8cf30679873c6c20910efea34f8d6fe238bb01ec80c0b101da898';
@@ -100,7 +99,7 @@ app.get('/oauth/userdata/:key', (request, response) =>
 );
 
 app.get('/api/societies', (req, res) => {
-  connection.query('SELECT * FROM societies', (error, results) => {
+  req.app.locals.connection.query('SELECT * FROM societies', (error, results) => {
     if (error) throw error;
 
     res.json(results);
@@ -108,7 +107,7 @@ app.get('/api/societies', (req, res) => {
 });
 
 app.get('/api/societies/:id(\\d+)', (req, res) => {
-  connection.query('SELECT * FROM societies WHERE id=?', [req.param.id], (error, results) => {
+  req.app.locals.connection.query('SELECT * FROM societies WHERE id=?', [req.param.id], (error, results) => {
     if (error) throw error;
 
     res.json(results[0]);
@@ -116,7 +115,7 @@ app.get('/api/societies/:id(\\d+)', (req, res) => {
 });
 
 app.get('/api/events', (res, req) => {
-  connection.query('SELECT * FROM events ORDER BY datetime DESC', (error, results) => {
+  req.app.locals.connection.query('SELECT * FROM events ORDER BY datetime DESC', (error, results) => {
     if (error) throw error;
 
     res.json(results);
@@ -124,7 +123,7 @@ app.get('/api/events', (res, req) => {
 });
 
 app.get('/events/:id(\\d+)', (res, req) => {
-  connection.query('SELECT * FROM events WHERE id=? ORDER BY datetime DESC', [req.param.id], (error, results) => {
+  req.app.locals.connection.query('SELECT * FROM events WHERE id=? ORDER BY datetime DESC', [req.param.id], (error, results) => {
     if (error) throw error;
 
     res.json(results[0]);
@@ -132,7 +131,7 @@ app.get('/events/:id(\\d+)', (res, req) => {
 });
 
 app.get('/socities/:id(\\d+)/events', (res, req) => {
-  connection.query('SELECT * FROM events WHERE society_id=? ORDER BY datetime DESC', [req.param.id], (error, results) => {
+  req.app.locals.connection.query('SELECT * FROM events WHERE society_id=? ORDER BY datetime DESC', [req.param.id], (error, results) => {
     if (error) throw error;
 
     res.json(results);
