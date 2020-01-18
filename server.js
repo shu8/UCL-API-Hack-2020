@@ -127,7 +127,7 @@ app.get('/events/:id(\\d+)', (res, req) => {
   });
 });
 
-app.get('/socities/:id(\\d+)/events', (res, req) => {
+app.get('/societies/:id(\\d+)/events', (res, req) => {
   req.app.locals.connection.query('SELECT * FROM events WHERE society_id=? ORDER BY datetime DESC', [req.param.id], (error, results) => {
     if (error) throw error;
 
