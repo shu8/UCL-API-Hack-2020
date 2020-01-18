@@ -7,6 +7,15 @@ const util = require('util');
 const moment = require('moment');
 const nodeRequest = require('request');
 
+const mysql = require('mysql');
+const connection = mysql.createConnection({
+  host: '0.0.0.0',
+  user: 'dbuser',
+  password: 'password',
+  database: 'uclapisoc'
+});
+connection.connect();
+
 const client_id = '2661579838577730.2946903875356405';
 const client_secret = '24b4d9c7d9a8cf30679873c6c20910efea34f8d6fe238bb01ec80c0b101da898';
 
