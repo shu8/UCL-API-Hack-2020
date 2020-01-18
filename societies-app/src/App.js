@@ -14,19 +14,12 @@ export default function SocietiesApp() {
   return (
     <Router>
       <div>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/societies">Societies</Link>
-          </li>
-          <li>
-            <Link to="/events">Events</Link>
-          </li>
-        </ul>
-
+            <Link className= "navbar" to="/">Home</Link>
+            <Link className= "navbar" to="/societies">Societies</Link>
+            <Link className= "navbar" to="/events">Events</Link>
         <hr />
+
+        
 
         <Switch>
           <Route exact path="/">
