@@ -29,20 +29,18 @@ export default class Societies extends React.Component {
                     Societies
                 </h1>
                 <img className='center-img' src="images/societies-logo.png" style={{width: '100%'}}></img>
-                {
-                    this.state.societies.map(soc => {
-                        return (
-                            <Card>
-                                <Card variant="top" src="holder.js/100px180" />
-                                <Card.Body>
-                                    <Card.Title>{soc.name}</Card.Title>
-                                    <Card.Text><i>{soc.desc}</i></Card.Text>
-                                    <Button variant="primary"> Go to society page </Button>
-                                </Card.Body>
-                            </Card>
-                        )
-                    })
-                }
+                {this.state.societies.map(soc => {
+                    return (
+                        <Card>
+                            <Card variant="top" src="holder.js/100px180" />
+                            <Card.Body>
+                                <Card.Title>{soc.name}</Card.Title>
+                                <Card.Text><i>{soc.desc}</i></Card.Text>
+                                <Button variant="primary">View society</Button>
+                            </Card.Body>
+                        </Card>
+                    )
+                })}
             </div>
         );
     }
