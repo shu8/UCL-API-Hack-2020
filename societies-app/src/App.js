@@ -5,7 +5,13 @@ import {
   Route,
   Link
 } from "react-router-dom";
+<<<<<<< Updated upstream
 import Societies from "./Societies"
+=======
+
+import Events from "./Events";
+
+>>>>>>> Stashed changes
 // This site has 3 pages, all of which are rendered
 // dynamically in the browser (not server rendered).
 //
@@ -27,7 +33,7 @@ export default function BasicExample() {
             <Link to="/societies">Societies</Link>
           </li>
           <li>
-            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/events">events</Link>
           </li>
         </ul>
 
@@ -47,8 +53,8 @@ export default function BasicExample() {
           <Route path="/societies">
             <Societies />
           </Route>
-          <Route path="/dashboard">
-            <Dashboard />
+          <Route path="/events">
+            <Events />
           </Route>
         </Switch>
       </div>
@@ -71,14 +77,6 @@ function About() {
   return (
     <div>
       <h2>About</h2>
-    </div>
-  );
-}
-
-function Dashboard() {
-  return (
-    <div>
-      <h2>Dashboard</h2>
     </div>
   );
 }
