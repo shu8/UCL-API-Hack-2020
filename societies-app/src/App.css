@@ -1,11 +1,13 @@
 
 body {
   text-align: center;
+  padding: 5px !important;
 }
 
 .login-container img {
   width: 50%;
 }
+<<<<<<< HEAD
 
 
 header {
@@ -53,3 +55,5 @@ p{
 .main {
   margin-top: 30px; /* Add a top margin to avoid content overlay */
 }
+=======
+>>>>>>> 6e8a24dd7224d55869a04f4be199fd8f2ddcb637

@@ -9,6 +9,7 @@ import {
 import Home from "./Home";
 import Societies from "./Societies";
 import Events from "./Events";
+import Admin from "./Admin";
 
 export default function SocietiesApp() {
   return (
@@ -30,6 +31,9 @@ export default function SocietiesApp() {
           </Route>
           <Route path="/events">
             <Events />
+          </Route>
+          <Route path="/admin">
+            <Admin />
           </Route>
         </Switch>
       </div>
