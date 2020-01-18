@@ -94,4 +94,21 @@ app.get('/oauth/userdata/:key', (request, response) =>
 
 app.get('/api', (req, res) => res.send('Hello, world!'));
 
+
+app.get('/api/societies', (req, res) => {
+  connection.query('SELECT * FROM societies', (error, results) => {
+    if (error) throw error;
+
+    res.json(results);
+  });
+});
+
+app.get('/api/societies/:id', (req, res) => {
+  connection.query('SELECT * FROM societies WHERE id=?', [req.param.id], (error, results) => {
+    if (error) throw error;
+
+    res.json(results[0]);
+  });
+})
+
 app.listen(port, () => console.log(`UCL API Hack 2020 app listening on port ${port}!`));
