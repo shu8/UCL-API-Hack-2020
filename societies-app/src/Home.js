@@ -22,7 +22,7 @@ export default class Home extends React.Component {
             <Card.Text>
               To use the Societies App, you need to login with UCL.
             </Card.Text>
-            <a href={`${Constants.API_URL}/login`}>
+            <a href={`${Constants.API_URL}/oauth/authorise`}>
               <Button variant="primary">Login with UCL</Button>
             </a>
           </Card.Body>
