@@ -5,7 +5,7 @@ import {
   Route,
   Link
 } from "react-router-dom";
-
+import Societies from "./Societies"
 // This site has 3 pages, all of which are rendered
 // dynamically in the browser (not server rendered).
 //
@@ -24,7 +24,7 @@ export default function BasicExample() {
             <Link to="/">Home</Link>
           </li>
           <li>
-            <Link to="/about">About</Link>
+            <Link to="/societies">Societies</Link>
           </li>
           <li>
             <Link to="/dashboard">Dashboard</Link>
@@ -44,8 +44,8 @@ export default function BasicExample() {
           <Route exact path="/">
             <Home />
           </Route>
-          <Route path="/about">
-            <About />
+          <Route path="/societies">
+            <Societies />
           </Route>
           <Route path="/dashboard">
             <Dashboard />
