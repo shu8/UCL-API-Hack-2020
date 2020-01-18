@@ -7,6 +7,9 @@ const util = require('util');
 const moment = require('moment');
 const nodeRequest = require('request');
 
+const client_id = '2661579838577730.2946903875356405';
+const client_secret = '24b4d9c7d9a8cf30679873c6c20910efea34f8d6fe238bb01ec80c0b101da898';
+
 app.locals.connection = require('mysql').createConnection({
   host: '0.0.0.0',
   user: 'root',
@@ -15,11 +18,8 @@ app.locals.connection = require('mysql').createConnection({
 });
 app.locals.connection.connect();
 
-const client_id = '2661579838577730.2946903875356405';
-const client_secret = '24b4d9c7d9a8cf30679873c6c20910efea34f8d6fe238bb01ec80c0b101da898';
-
-let oauthMoments = {};
-let sessions = {};
+app.locals.oauthMoments = {};
+app.locals.sessions = {};
 
 app.use(express.static('public'));
 
@@ -28,14 +28,14 @@ app.get('/', (req, res) => res.sendFile(__dirname + '/views/index.html'));
 app.get('/oauth/authorise', (request, response) => {
   let state = randomstring.generate();
 
-  oauthMoments[state] = moment();
+  req.app.locals.oauthMoments[state] = moment();
 
   response.redirect(util.format('https://uclapi.com/oauth/authorise?client_id=%s&state=%s', client_id, state));
 });
 
 app.get('/oauth/callback', (request, response) => {
-  if (request.query.state in oauthMoments) {
-    if (moment(oauthMoments[request.query.state]).add(300, 'seconds') > moment()) {
+  if (request.query.state in req.app.locals.oauthMoments) {
+    if (moment(req.app.locals.oauthMoments[request.query.state]).add(300, 'seconds') > moment()) {
       if (request.query.result == 'denied') {
         response.send(util.format('The login operation for state %s was denied', request.query.state));
       } else {
@@ -65,7 +65,7 @@ app.get('/oauth/callback', (request, response) => {
 
             let auth_key = randomstring.generate();
 
-            sessions[auth_key] = {
+            req.app.locals.sessions[auth_key] = {
               'full_name': body.full_name,
               'given_name': body.given_name,
               'email': body.email,
@@ -92,10 +92,7 @@ app.get('/oauth/callback', (request, response) => {
 });
 
 app.get('/oauth/userdata/:key', (request, response) =>
-  response.json(request.params.key in sessions ? {
-    'name': sessions[request.params.key]['name'],
-    'department': sessions[request.params.key]['department']
-  } : {})
+  response.json(request.params.key in req.app.locals.sessions ? req.app.locals.sessions[request.params.key] : {})
 );
 
 app.get('/api/societies', (req, res) => {
