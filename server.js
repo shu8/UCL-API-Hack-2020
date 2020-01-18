@@ -63,15 +63,22 @@ app.get('/oauth/callback', (request, response) => {
               return console.log(err);
             }
 
+
             let auth_key = randomstring.generate();
-            let user = {
-              'name': body.full_name,
+
+            sessions[auth_key] = {
+              'full_name': body.full_name,
+              'given_name': body.given_name,
+              'email': body.email,
               'department': body.department,
+              'cn': body.cn,
+              'upi': body.upi,
+              'scope_number': body.scope_number,
+              'is_student': body.is_student,
+
               'token': token,
               'auth_key': auth_key
-            }
-
-            sessions[auth_key] = user;
+            };
 
             response.redirect(util.format('/login/success?key=%s', auth_key));
           });
@@ -92,9 +99,6 @@ app.get('/oauth/userdata/:key', (request, response) =>
   } : {})
 );
 
-app.get('/api', (req, res) => res.send('Hello, world!'));
-
-
 app.get('/api/societies', (req, res) => {
   connection.query('SELECT * FROM societies', (error, results) => {
     if (error) throw error;
@@ -109,7 +113,7 @@ app.get('/api/societies/:id(\\d+)', (req, res) => {
 
     res.json(results[0]);
   });
-})
+});
 
 app.get('/api/events', (res, req) => {
   connection.query('SELECT * FROM events ORDER BY datetime DESC', (error, results) => {
@@ -117,23 +121,22 @@ app.get('/api/events', (res, req) => {
 
     res.json(results);
   })
-})
+});
 
 app.get('/events/:id(\\d+)', (res, req) => {
   connection.query('SELECT * FROM events WHERE id=? ORDER BY datetime DESC', [req.param.id], (error, results) => {
     if (error) throw error;
 
     res.json(results[0]);
-  })
-})
+  });
+});
 
 app.get('/socities/:id(\\d+)/events', (res, req) => {
   connection.query('SELECT * FROM events WHERE society_id=? ORDER BY datetime DESC', [req.param.id], (error, results) => {
     if (error) throw error;
 
     res.json(results);
-  })
-})
-
+  });
+});
 
 app.listen(port, () => console.log(`UCL API Hack 2020 app listening on port ${port}!`));
