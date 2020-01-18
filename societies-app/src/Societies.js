@@ -1,68 +1,50 @@
 import React from 'react';
 import {
     Card,
-    Button} from "react-bootstrap"
+    Button
+} from "react-bootstrap"
 
-export default class Societies extends React.Component{
-    constructor(props){
+export default class Societies extends React.Component {
+    constructor(props) {
         super(props)
         this.state = {
-            societies:[{
+            societies: [{
                 name: "s1",
-                desc : "s1 desc"
+                desc: "s1 desc"
             }, {
                 name: "s2",
                 desc: "s2 desc"
             }]
         }
     }
-    componentDidMount(){
 
+    componentDidMount() {
+        // TODO API call, set setState({societies: [api result]})
     }
 
-    
-    render(){
+    render() {
         return (
-
             <div>
-
-
-                <title>
+                <h1>
                     Societies
-                </title>
-
-                <h1 align="center">Societies</h1>
-
-
-                 
-                <img src= "images/societies-logo.png" width ="220" height= "130" align="middle"></img>
-                
+                </h1>
+                <img className='center-img' src="images/societies-logo.png" style={{width: '100%'}}></img>
                 {
                     this.state.societies.map(soc => {
                         return (
-                            <Card style={{ width: '18rem' }}>
-                               <Card variant="top" src="holder.js/100px180" />
+                            <Card>
+                                <Card variant="top" src="holder.js/100px180" />
                                 <Card.Body>
                                     <Card.Title>{soc.name}</Card.Title>
-                                    <Card.Text> {soc.desc}: <br/>
-                                    This is where the socity describtion will go. <br/>
-                                    </Card.Text>
-                                    <Button variant="primary"> Go to socity page </Button>
+                                    <Card.Text><i>{soc.desc}</i></Card.Text>
+                                    <Button variant="primary"> Go to society page </Button>
                                 </Card.Body>
                             </Card>
                         )
                     })
                 }
-
-                
-                
             </div>
-            
-            
-           
-        )
-        
-
+        );
     }
 }
 
