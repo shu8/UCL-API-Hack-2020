@@ -4,8 +4,8 @@ const port = 3000;
 
 app.use(express.static('public'));
 
-app.get('/', (request, response) => {
-    response.sendFile(__dirname + '/views/index.html');
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/views/index.html');
 });
 
 app.get('/api', (req, res) => res.send('Hello, world!'));
