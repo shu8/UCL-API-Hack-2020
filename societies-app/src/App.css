@@ -6,3 +6,18 @@ body {
 .login-container img {
   width: 50%;
 }
+
+header {
+  font-family: 'Times';
+  font-size: 80px;
+}
+
+h3 {
+  font-family: 'Arial';
+  font-size: 50px;
+}
+
+p{
+  font-family; 'Arial';
+  font-size: 20px;
+}
