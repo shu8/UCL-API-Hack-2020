@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
 const isLoggedIn = (req, res, next) => {
-  const key;
+  let key;
 
   if (!(key = req.get('X-AUTH-KEY')) || !(key in app.locals.sessions)) {
     return res.status(403).json({

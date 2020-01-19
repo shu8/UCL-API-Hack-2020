@@ -9,9 +9,9 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.locals.connection = require('mysql').createConnection({
-  host: '0.0.0.0',
-  user: 'root',
-  password: '',
+  host: 'localhost',
+  user: 'uclapisocuser',
+  password: 'uclapisocpassword',
   database: 'uclapisoc'
 });
 app.locals.connection.connect();
