@@ -75,7 +75,9 @@ router.get('/callback', (request, response) => {
 });
 
 router.get('/userdata/:key', (request, response) =>
-  response.json(request.params.key in req.app.locals.sessions ? req.app.locals.sessions[request.params.key] : {})
+  response.json(request.params.key in req.app.locals.sessions ? req.app.locals.sessions[request.params.key] : {
+    error: "I am error."
+  })
 );
 
 module.exports = router
