@@ -115,7 +115,7 @@ router.get('/societies/:id(\\d+)/faqs', (req, res) => {
 
 router.post('/societies/:id(\\d+)/faqs', isLoggedIn, (req, res) => {
   req.app.locals.connection.query('INSERT INTO faqs (society_id, question, answer) VALUES (?, ?, ?)', [
-    req.param.society_id,
+    req.params.id,
     req.body.question,
     req.body.answer
   ], (error, results) => {
@@ -125,6 +125,15 @@ router.post('/societies/:id(\\d+)/faqs', isLoggedIn, (req, res) => {
       success: true,
       faq_id: results.insertId
     });
+  });
+});
+
+
+router.get('/faqs', (req, res) => {
+  req.app.locals.connection.query('SELECT * FROM faqs', (error, results) => {
+    if (error) throw error.message;
+
+    return res.json(results);
   });
 });
 
@@ -138,7 +147,7 @@ router.get('/societies/:id(\\d+)/roles', (req, res) => {
 
 router.post('/societies/:id(\\d+)/roles', isLoggedIn, (req, res) => {
   req.app.locals.connection.query('INSERT INTO society_roles (society_id, name, user_upi, role_description) VALUES (?, ?, ?, ?)', [
-    req.param.society_id,
+    req.params.society_id,
     req.body.name,
     req.app.locals.sessions[req.auth_key].upi,
     req.body.description
