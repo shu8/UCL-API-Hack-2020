@@ -4,6 +4,7 @@ import {
   Button,
   Modal
 } from "react-bootstrap"
+import apiGet from './API';
 
 import apiGet from "./API";
 import * as Constants from "./Constants"
@@ -22,7 +23,7 @@ export default class Societies extends React.Component {
         soc_id: "123",
         question: "test question1?",
         answer: "test answer1"
-      },  
+      },
       {
         soc_id: "124",
         question: "test question2?",
@@ -37,22 +38,22 @@ export default class Societies extends React.Component {
       societies: [{
         soc_id: "123",
         name: "s1",
-        desc: "s1 desc",
-        categories: ["Technology", "Medicine"],
+        description: "s1 desc",
+        category: "Technology",
         detail: "s1 detailed summary",
         logo: "/uclsslogo.png"
       }, {
         soc_id: "124",
         name: "s2",
         desc: "s2 desc",
-        categories: ["Medicine"],
+        category: "Medicine",
         detail: "s2 detailed summary",
         logo: "/uclsslogo.png"
       }, {
         soc_id: "125",
         name: "s3",
         desc: "s3 desc",
-        categories: ["Sports"],
+        category: "Medicine",
         detail: "s3 detailed summary",
         logo: "/uclsslogo.png"
       }],
@@ -82,7 +83,7 @@ export default class Societies extends React.Component {
           logo: "/uclsslogo.png"
         },
         {
-          name: "Free",
+          name: "Arts",
           logo: "/uclsslogo.png"
         }
       ]
@@ -90,11 +91,12 @@ export default class Societies extends React.Component {
   }
 
   componentDidMount() {
-    // TODO call API, get societies, store in state
-    // TODO API call, set setState({societies: [api result]})
-    apiGet("societies", Constants.SESSION_ID, result => {
-      this.setState({ societies: result })
-    })
+    apiGet('societies', result => {
+      console.log('societies', result);
+      this.setState({
+        societies: result,
+      });
+    });
   }
 
   renderModalBody() {
@@ -144,7 +146,7 @@ export default class Societies extends React.Component {
           Societies
           {` (${this.props.match.params.category})`}
         </h1>
-        {this.state.societies.filter(soc => soc.categories.includes(desiredCat)).map((cat, i) => {
+        {this.state.societies.filter(soc => soc.category === desiredCat).map((cat, i) => {
           return (
             <div>
               <Card>
@@ -162,13 +164,10 @@ export default class Societies extends React.Component {
               </Card>
               <Modal show={this.state.show} onHide={() => this.setState({ show: false })}>
                 <Modal.Header closeButton>
-
                 <Modal.Title>
                   {this.state.societies[this.state.openSocIndex].name}
                   <img src={this.state.societies[this.state.openSocIndex].logo} style={{ width: '25%', float: 'right' }} />
-
                 </Modal.Title>
-
               </Modal.Header>
               <Modal.Body>{this.renderModalBody()}</Modal.Body>
               <Modal.Footer>
