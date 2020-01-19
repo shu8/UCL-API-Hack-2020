@@ -31,7 +31,7 @@ export default function SocietiesApp() {
             const queryParams = querystring.parse(search.substr(1));
             const sessionId = queryParams.key;
             if (sessionId) window.sessionStorage.setItem("sessionId", sessionId);
-            props.history.push('/');
+            // props.history.push('/');
           }} />
 
           <Route exact path="/">

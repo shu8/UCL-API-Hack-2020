@@ -67,7 +67,7 @@ export default class Societies extends React.Component {
           logo: "/uclsslogo.png"
         },
         {
-          name: "Sports",
+          name: "Common Interest",
           logo: "/uclsslogo.png"
         },
         {
@@ -179,9 +179,12 @@ export default class Societies extends React.Component {
   }
 
   renderModalBody() {
-    console.log('state faq', this.state);
     if (this.state.modalType === 'faq') {
-      const faqs = this.state.faqs.filter(f => f.society_id == this.state.societies[this.state.openSocIndex].id);
+      const faqs = this.state.faqs.map((faq, i) => ({
+        index: i,
+        faq,
+      })).filter(faq => faq.faq.society_id == this.state.societies[this.state.openSocIndex].id);
+
       return faqs.length ? (
         <div>
           <h2>FAQs</h2>
@@ -189,11 +192,11 @@ export default class Societies extends React.Component {
             faqs.map(faq => (
               <p>
                 <strong>
-                  {faq.question}
+                  {faq.faq.question}
                 </strong>
                 <br />
                 <i>
-                  {faq.answer}
+                  {faq.faq.answer}
                 </i>
               </p>
             ))
