@@ -1,3 +1,4 @@
+export const BASE_API_URL = 'https://uclapisoc.jezz.me';
 export const API_URL = 'https://uclapisoc.jezz.me/api';
 export const SESSION_ID = window.sessionStorage.getItem('sessionId');
 export const mysqlToJsDate = mysqlDate => {
