@@ -5,7 +5,8 @@ import {
   Modal
 } from "react-bootstrap"
 
-import apiGet from "./API";
+import * as API from "./API";
+import { mysqlToJsDate } from './Constants';
 
 export default class Societies extends React.Component {
   constructor(props) {
@@ -55,6 +56,7 @@ export default class Societies extends React.Component {
         detail: "s3 detailed summary",
         logo: "/uclsslogo.png"
       }],
+
       categories: [
         {
           name: "Technology",
@@ -80,23 +82,41 @@ export default class Societies extends React.Component {
           name: "Arts",
           logo: "/uclsslogo.png"
         }
-      ]
+      ],
+
+      events: [],
     }
   }
 
   componentDidMount() {
-    apiGet('societies', result => {
+    API.apiGet('societies', result => {
       console.log('societies', result);
       this.setState({
         societies: result,
       });
     });
 
-    apiGet('faqs', result => {
+    API.apiGet('faqs', result => {
       console.log('faqs', result);
       this.setState({
         faqs: result,
       });
+    });
+
+    API.apiGet('events', result => {
+      console.log('events', result);
+      this.setState({
+        events: result,
+      });
+    });
+  }
+
+  followSociety(socIndex) {
+    console.log('FOLLOWING', this.state.societies[socIndex].id);
+    API.apiPost('/following', {
+      society_id: this.state.societies[socIndex].id,
+    }, result => {
+      console.log(result);
     });
   }
 
@@ -186,10 +206,29 @@ export default class Societies extends React.Component {
       )
     } else {
       const soc = this.state.societies[this.state.openSocIndex];
+      const events = this.state.events.filter(e => e.society_id == soc.id);
+
       return (
         <div>
           <img className='soc-modal-image' src={soc.image} />
-          {soc.description}
+          <strong>{soc.description}</strong>
+          <hr />
+          {events.length
+            ? (
+              <div>
+                <h4>Events</h4>
+                {events.map(ev => (
+                  <p>
+                    {ev.name}
+                    {' '}
+                    ({mysqlToJsDate(ev.datetime).toLocaleString()})
+                    <br />
+                    <i className='event-modal-desc'>{ev.description}</i>
+                  </p>
+                ))}
+              </div>
+            ) : ''}
+
         </div>
       )
     }

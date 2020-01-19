@@ -6,7 +6,7 @@ import {
   Modal,
 } from 'react-bootstrap';
 
-import apiGet from './API';
+import * as API from './API';
 import * as Constants from './Constants';
 
 export default class Events extends React.Component {
@@ -34,14 +34,14 @@ export default class Events extends React.Component {
   }
 
   componentDidMount() {
-    apiGet('events', result => {
+    API.apiGet('events', result => {
       console.log('events', result);
       this.setState({
         events: result,
       });
     });
 
-    apiGet('societies', result => {
+    API.apiGet('societies', result => {
       console.log('societies', result);
       this.setState({
         societies: result,

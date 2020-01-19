@@ -4,10 +4,6 @@ body {
   padding: 5px !important;
 }
 
-.login-container img {
-  width: 50%;
-}
-
 header {
   font-family: 'Times';
   font-size: 80px;
@@ -25,4 +21,8 @@ p{
 
 .soc-modal-image {
   width: 100%;
+}
+
+.event-modal-desc {
+  font-size: smaller;
 }
