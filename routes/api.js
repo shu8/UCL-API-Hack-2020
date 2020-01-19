@@ -3,7 +3,7 @@ const router = require('express').Router()
 const isLoggedIn = (req, res, next) => {
   let key;
 
-  if (!(key = req.get('X-AUTH-KEY')) || !(key in app.locals.sessions)) {
+  if (!(key = req.get('X-AUTH-KEY')) || !(key in req.app.locals.sessions)) {
     return res.status(403).json({
       error: "The user must be logged in to perform this action.",
       is_logged_in: false
@@ -12,18 +12,18 @@ const isLoggedIn = (req, res, next) => {
 
   req.auth_key = req.get('X-AUTH-KEY');
 
-  return next(req, res, next);
+  next();
 };
 
 router.get('/logout', isLoggedIn, (req, res) => {
-  delete app.locals.sessions[req.auth_key];
+  delete req.app.locals.sessions[req.auth_key];
 
   return res.redirect('/');
 });
 
 router.get('/societies', (req, res) => {
   req.app.locals.connection.query('SELECT * FROM societies', (error, results) => {
-    if (error) throw error;
+    if (error) throw error.message;
 
     res.json(results);
   });
@@ -31,7 +31,7 @@ router.get('/societies', (req, res) => {
 
 router.get('/societies/:id(\\d+)', (req, res) => {
   req.app.locals.connection.query('SELECT * FROM societies WHERE id=?', [req.param.id], (error, results) => {
-    if (error) throw error;
+    if (error) throw error.message;
 
     res.json(results[0]);
   });
@@ -39,21 +39,21 @@ router.get('/societies/:id(\\d+)', (req, res) => {
 
 router.get('/societies/:id(\\d+)/events', (req, res) => {
   req.app.locals.connection.query('SELECT * FROM events WHERE society_id=? ORDER BY datetime DESC', [req.param.id], (error, results) => {
-    if (error) throw error;
+    if (error) throw error.message;
 
     res.json(results);
   });
 });
 
 router.post('/societies', isLoggedIn, (req, res) => {
-  app.locals.connection.query('INSERT INTO societies (user_upi, name, image, description, category) VALUES (?, ?, ?, ?, ?)', [
-    app.locals.sessions[req.auth_key].upi,
+  req.app.locals.connection.query('INSERT INTO societies (user_upi, name, image, description, category) VALUES (?, ?, ?, ?, ?)', [
+    req.app.locals.sessions[req.auth_key].upi,
     req.body.name,
     req.body.image,
     req.body.description,
     req.body.category
-  ], (error) => {
-    if (error) throw error;
+  ], (error, results) => {
+    if (error) throw error.message;
 
     return res.json({
       success: true,
@@ -64,7 +64,7 @@ router.post('/societies', isLoggedIn, (req, res) => {
 
 router.get('/societies/category/:category', (req, res) => {
   req.app.locals.connection.query('SELECT * FROM events WHERE category LIKE ?', ['%' + req.param.category + '%'], (error, results) => {
-    if (error) throw error;
+    if (error) throw error.message;
 
     res.json(results);
   });
@@ -72,7 +72,7 @@ router.get('/societies/category/:category', (req, res) => {
 
 router.get('/events', (req, res) => {
   req.app.locals.connection.query('SELECT * FROM events ORDER BY datetime DESC', (error, results) => {
-    if (error) throw error;
+    if (error) throw error.message;
 
     res.json(results);
   })
@@ -80,14 +80,14 @@ router.get('/events', (req, res) => {
 
 router.get('/events/:id(\\d+)', (req, res) => {
   req.app.locals.connection.query('SELECT * FROM events WHERE id=? ORDER BY datetime DESC', [req.param.id], (error, results) => {
-    if (error) throw error;
+    if (error) throw error.message;
 
     res.json(results[0]);
   });
 });
 
 router.post('/events', isLoggedIn, (req, res) => {
-  app.locals.connection.query('INSERT INTO events (society_id, name, summary, description, image, category) VALUES (?, ?, ?, ?, ?, ?)', [
+  req.app.locals.connection.query('INSERT INTO events (society_id, name, summary, description, image, category) VALUES (?, ?, ?, ?, ?, ?)', [
     req.body.society_id,
     req.body.name,
     req.body.summary,
@@ -95,7 +95,7 @@ router.post('/events', isLoggedIn, (req, res) => {
     req.body.image,
     req.body.category
   ], (error) => {
-    if (error) throw error;
+    if (error) throw error.message;
 
     return res.json({
       success: true,
@@ -105,20 +105,20 @@ router.post('/events', isLoggedIn, (req, res) => {
 });
 
 router.get('/societies/:id(\\d+)/faqs', (req, res) => {
-  app.locals.connection.query('SELECT question, answer FROM faqs WHERE society_id = ?', [req.param.id], (error, results) => {
-    if (error) throw error;
+  req.app.locals.connection.query('SELECT question, answer FROM faqs WHERE society_id = ?', [req.param.id], (error, results) => {
+    if (error) throw error.message;
 
     return res.json(results);
   });
 });
 
 router.post('/societies/:id(\\d+)/faqs', (req, res) => {
-  app.locals.connection.query('INSERT INTO faqs (society_id, question, answer) VALUES (?, ?, ?)', [
+  req.app.locals.connection.query('INSERT INTO faqs (society_id, question, answer) VALUES (?, ?, ?)', [
     req.param.society_id,
     req.body.question,
     req.body.answer
   ], (error) => {
-    if (error) throw error;
+    if (error) throw error.message;
 
     return res.json({
       success: true
