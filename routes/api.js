@@ -30,15 +30,15 @@ router.get('/societies', (req, res) => {
 });
 
 router.get('/societies/:id(\\d+)', (req, res) => {
-  req.app.locals.connection.query('SELECT * FROM societies WHERE id=?', [req.param.id], (error, results) => {
+  req.app.locals.connection.query('SELECT * FROM societies WHERE id = ?', [req.params.id], (error, results) => {
     if (error) throw error.message;
 
-    res.json(results[0]);
+    res.json(results);
   });
 });
 
 router.get('/societies/:id(\\d+)/events', (req, res) => {
-  req.app.locals.connection.query('SELECT * FROM events WHERE society_id=? ORDER BY datetime DESC', [req.param.id], (error, results) => {
+  req.app.locals.connection.query('SELECT * FROM events WHERE society_id=? ORDER BY datetime DESC', [req.params.id], (error, results) => {
     if (error) throw error.message;
 
     res.json(results);
@@ -63,7 +63,7 @@ router.post('/societies', isLoggedIn, (req, res) => {
 });
 
 router.get('/societies/category/:category', (req, res) => {
-  req.app.locals.connection.query('SELECT * FROM events WHERE category LIKE ?', ['%' + req.param.category + '%'], (error, results) => {
+  req.app.locals.connection.query('SELECT * FROM events WHERE category LIKE ?', ['%' + req.params.category + '%'], (error, results) => {
     if (error) throw error.message;
 
     res.json(results);
@@ -79,7 +79,7 @@ router.get('/events', (req, res) => {
 });
 
 router.get('/events/:id(\\d+)', (req, res) => {
-  req.app.locals.connection.query('SELECT * FROM events WHERE id=? ORDER BY datetime DESC', [req.param.id], (error, results) => {
+  req.app.locals.connection.query('SELECT * FROM events WHERE id=? ORDER BY datetime DESC', [req.params.id], (error, results) => {
     if (error) throw error.message;
 
     res.json(results[0]);
@@ -105,7 +105,7 @@ router.post('/events', isLoggedIn, (req, res) => {
 });
 
 router.get('/societies/:id(\\d+)/faqs', (req, res) => {
-  req.app.locals.connection.query('SELECT question, answer FROM faqs WHERE society_id = ?', [req.param.id], (error, results) => {
+  req.app.locals.connection.query('SELECT question, answer FROM faqs WHERE society_id = ?', [req.params.id], (error, results) => {
     if (error) throw error.message;
 
     return res.json(results);
