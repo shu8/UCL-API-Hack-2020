@@ -69,7 +69,7 @@ export default class Interests extends React.Component {
                   <Card.Img src={cat.logo} style={{ width: '50%' }} align='right'></Card.Img>
                 </Card.Body>
               </Card>
-            )
+            );
           })}
         </div>
       )
