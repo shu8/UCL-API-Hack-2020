@@ -62,6 +62,13 @@ router.post('/societies', isLoggedIn, (req, res) => {
   });
 });
 
+router.get('/societies/category/:category', (req, res) => {
+  req.app.locals.connection.query('SELECT * FROM events WHERE category LIKE ?', ['%' + req.param.category + '%'], (error, results) => {
+    if (error) throw error;
+
+    res.json(results);
+  });
+});
 
 router.get('/events', (req, res) => {
   req.app.locals.connection.query('SELECT * FROM events ORDER BY datetime DESC', (error, results) => {
