@@ -21,7 +21,7 @@ app.locals.sessions = {};
 
 app.use(express.static('public'));
 
-app.get('/', (req, res) => res.sendFile(__dirname + '/societies-app/public/index.html'));
+app.get('/', (req, res) => res.sendFile(__dirname + '/societies-app/build/index.html'));
 
 app.use('/oauth', require('./routes/oauth'));
 app.use('/api', require('./routes/api'));

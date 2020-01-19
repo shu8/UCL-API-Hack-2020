@@ -11,14 +11,14 @@ const client_secret = '24b4d9c7d9a8cf30679873c6c20910efea34f8d6fe238bb01ec80c0b1
 router.get('/authorise', (request, response) => {
   let state = randomstring.generate();
 
-  req.app.locals.oauthMoments[state] = moment();
+  request.app.locals.oauthMoments[state] = moment();
 
   response.redirect(util.format('https://uclapi.com/oauth/authorise?client_id=%s&state=%s', client_id, state));
 });
 
 router.get('/callback', (request, response) => {
-  if (request.query.state in req.app.locals.oauthMoments) {
-    if (moment(req.app.locals.oauthMoments[request.query.state]).add(300, 'seconds') > moment()) {
+  if (request.query.state in request.app.locals.oauthMoments) {
+    if (moment(request.app.locals.oauthMoments[request.query.state]).add(300, 'seconds') > moment()) {
       if (request.query.result == 'denied') {
         response.send(util.format('The login operation for state %s was denied', request.query.state));
       } else {
@@ -48,7 +48,7 @@ router.get('/callback', (request, response) => {
 
             let auth_key = randomstring.generate();
 
-            req.app.locals.sessions[auth_key] = {
+            request.app.locals.sessions[auth_key] = {
               'full_name': body.full_name,
               'given_name': body.given_name,
               'email': body.email,
@@ -74,8 +74,8 @@ router.get('/callback', (request, response) => {
   }
 });
 
-router.get('/userdata/:key', (request, response) =>
-  response.json(request.params.key in req.app.locals.sessions ? req.app.locals.sessions[request.params.key] : {
+router.get('/userdata/:key', (req, res) =>
+  res.json(req.params.key in req.app.locals.sessions ? req.app.locals.sessions[req.params.key] : {
     error: "I am error."
   })
 );
