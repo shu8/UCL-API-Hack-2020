@@ -11,7 +11,22 @@ export default class Home extends React.Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    const sessionId = window.sessionStorage.getItem('sessionId');
+    // TODO make api call, check if success
+  }
+
   render() {
+    const isLoggedIn = !!window.sessionStorage.getItem('sessionId');
+
+    if (isLoggedIn) {
+      return (
+        <div>
+          Logged in
+        </div>
+      );
+    }
+
     return (
       <div>
         <h1>Login</h1>

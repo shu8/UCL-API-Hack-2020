@@ -1,4 +1,5 @@
 import React from "react";
+import querystring from 'querystring';
 import {
   BrowserRouter as Router,
   Switch,
@@ -22,9 +23,23 @@ export default function SocietiesApp() {
         <hr />
 
         <Switch>
+          <Route path="/login/success" render={props => {
+            let search = props.location.search;
+            if (!search) return;
+            const queryParams = querystring.parse(search.substr(1));
+            const sessionId = queryParams.key;
+            if (sessionId) window.sessionStorage.setItem("sessionId", sessionId);
+            props.history.push('/');
+          }} />
+
           <Route exact path="/">
             <Home />
           </Route>
+
+          <Route exact path="/logout" render={props => {
+            window.sessionStorage.removeItem('sessionId');
+            props.history.push('/api/logout');
+          }} />
 
           <Route
             path="/societies/:category"
@@ -37,6 +52,7 @@ export default function SocietiesApp() {
           <Route path="/events">
             <Events />
           </Route>
+
           <Route path="/admin">
             <Admin />
           </Route>
