@@ -113,7 +113,7 @@ router.get('/societies/:id(\\d+)/faqs', (req, res) => {
   });
 });
 
-router.post('/societies/:id(\\d+)/faqs', (req, res) => {
+router.post('/societies/:id(\\d+)/faqs', isLoggedIn, (req, res) => {
   req.app.locals.connection.query('INSERT INTO faqs (society_id, question, answer) VALUES (?, ?, ?)', [
     req.param.society_id,
     req.body.question,
@@ -124,6 +124,53 @@ router.post('/societies/:id(\\d+)/faqs', (req, res) => {
     return res.json({
       success: true,
       faq_id: results.insertId
+    });
+  });
+});
+
+router.get('/societies/:id(\\d+)/roles', (req, res) => {
+  req.app.locals.connection.query('SELECT * FROM society_roles WHERE society_id = ?', [req.params.id], (error, results) => {
+    if (error) throw error.message;
+
+    return res.json(results);
+  });
+});
+
+router.post('/societies/:id(\\d+)/roles', isLoggedIn, (req, res) => {
+  req.app.locals.connection.query('INSERT INTO society_roles (society_id, name, user_upi, role_description) VALUES (?, ?, ?, ?)', [
+    req.param.society_id,
+    req.body.name,
+    req.app.locals.sessions[req.auth_key].upi,
+    req.body.description
+  ], (error, results) => {
+    if (error) throw error.message;
+
+    return res.json({
+      success: true,
+      role_id: results.insertId
+    });
+  });
+});
+
+router.get('/following', isLoggedIn, (req, res) => {
+  req.app.locals.connection.query('SELECT * FROM followed_societies WHERE user_upi = ?', [req.app.locals.sessions[req.auth_key].upi], (error, results) => {
+    if (error) throw error.message;
+
+    return res.json(results);
+  });
+});
+
+
+router.post('/following', isLoggedIn, (req, res) => {
+  req.app.locals.connection.query('INSERT INTO followed_societies (user_upi, society_id) VALUES (?, ?)', [
+    req.app.locals.sessions[req.auth_key].upi,
+    req.body.society_id
+  ], (error, results) => {
+    if (error) throw error.message;
+
+    return res.json({
+      success: true,
+      society_follow_id: results.insertId
     });
   });
 });
