@@ -32,7 +32,7 @@ app.locals.sessions = {
   }
 };
 
-app.use(express.static('public'));
+app.use(express.static('societies-app/build'));
 
 app.get('/', (req, res) => res.sendFile(__dirname + '/societies-app/build/index.html'));
 
