@@ -4,27 +4,27 @@ import {
   Card,
   Button
 } from 'react-bootstrap';
+import Societies from "./Interests";
 
 export default class Home extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {};
+    this.state = {
+      success: false,
+    };
   }
 
   componentDidMount() {
     const sessionId = window.sessionStorage.getItem('sessionId');
     // TODO make api call, check if success
+    // TODO change that to check if success
+    const success = !!sessionId;
+    this.setState({ isLoggedIn: success });
   }
 
   render() {
-    const isLoggedIn = !!window.sessionStorage.getItem('sessionId');
-
-    if (isLoggedIn) {
-      return (
-        <div>
-          Logged in
-        </div>
-      );
+    if (this.state.isLoggedIn) {
+      return <Societies />;
     }
 
     return (
