@@ -35,6 +35,7 @@ app.locals.sessions = {
 app.use(express.static('societies-app/build'));
 
 app.get('/', (req, res) => res.sendFile(__dirname + '/societies-app/build/index.html'));
+app.get('/login/success', (req, res) => res.sendFile(__dirname + '/societies-app/build/index.html'));
 
 app.use('/oauth', require('./routes/oauth'));
 app.use('/api', require('./routes/api'));
