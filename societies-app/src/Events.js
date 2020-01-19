@@ -2,7 +2,8 @@ import React from "react";
 
 import {
   Card,
-  Button
+  Button,
+  Modal,
 } from 'react-bootstrap';
 
 import apiGet from './API';
@@ -12,6 +13,8 @@ export default class Events extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      show: false,
+      openEventIndex: 0,
       societies: [],
       events: [
         {
@@ -53,24 +56,46 @@ export default class Events extends React.Component {
           Events
         </h1>
         <img className='center-img' src="images/societies-logo.png" style={{ width: '100%' }}></img>
-        {this.state.events.map(event => {
+        {this.state.events.map((event, i) => {
           const soc = this.state.societies.find(s => s.id == event.society_id);
           const name = soc ? soc.name : undefined;
           return (
-            <Card>
-              {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
-              <Card.Body>
-                <Card.Title> {event.name}</Card.Title>
-                <Card.Text>
-                  <i>{event.summary}</i> <br />
-                  {name ? name : ''} ({Constants.mysqlToJsDate(event.datetime).toLocaleString()})<br />
-                  {event.description}
-                </Card.Text>
-                <Button variant="primary">View event</Button>
-              </Card.Body>
-            </Card>
+            <div>
+              <Card>
+                <Card.Body>
+                  <Card.Title> {event.name}</Card.Title>
+                  <Card.Text>
+                    <i>{event.summary}</i> <br />
+                    {name ? name : ''} ({Constants.mysqlToJsDate(event.datetime).toLocaleString()})<br />
+                  </Card.Text>
+                  <Button variant="primary" onClick={() => this.setState({ show: true, openEventIndex: i })}>View event</Button>
+                </Card.Body>
+              </Card>
+            </div>
           )
-        })};
+        })}
+
+        <Modal show={this.state.show} onHide={() => this.setState({ show: false })}>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              {this.state.events[this.state.openEventIndex].name}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <i>{this.state.events[this.state.openEventIndex].summary}</i>
+            <br />
+            {this.state.events[this.state.openEventIndex].description}
+            <br /><br />
+            Come along at
+            {' '}
+            {Constants.mysqlToJsDate(this.state.events[this.state.openEventIndex.datetime]).toLocaleString()}!
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => this.setState({ show: false })}>
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   }
