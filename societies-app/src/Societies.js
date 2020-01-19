@@ -5,6 +5,9 @@ import {
   Modal
 } from "react-bootstrap"
 
+import apiGet from "./API";
+import * as Constants from "./Constants"
+
 export default class Societies extends React.Component {
   constructor(props) {
     super(props);
@@ -12,22 +15,41 @@ export default class Societies extends React.Component {
       view_mode: "categories",
       show: false,
       openSocIndex: 0,
+      eventsForOpenSoc: [],
+      modalType: "vsoc",
+
+      faq: [{
+        soc_id: "123",
+        question: "test question1?",
+        answer: "test answer1"
+      },  
+      {
+        soc_id: "124",
+        question: "test question2?",
+        answer: "test answer2"
+      },
+      {
+        soc_id: "125",
+        question: "test question3?",
+        answer: "test answer3"
+      }],
+
       societies: [{
-        id: "123",
+        soc_id: "123",
         name: "s1",
         desc: "s1 desc",
         categories: ["Technology", "Medicine"],
         detail: "s1 detailed summary",
         logo: "/uclsslogo.png"
       }, {
-        id: "124",
+        soc_id: "124",
         name: "s2",
         desc: "s2 desc",
         categories: ["Medicine"],
         detail: "s2 detailed summary",
         logo: "/uclsslogo.png"
       }, {
-        id: "125",
+        soc_id: "125",
         name: "s3",
         desc: "s3 desc",
         categories: ["Sports"],
@@ -69,8 +91,30 @@ export default class Societies extends React.Component {
 
   componentDidMount() {
     // TODO call API, get societies, store in state
+    // TODO API call, set setState({societies: [api result]})
+    apiGet("societies", Constants.SESSION_ID, result => {
+      this.setState({ societies: result })
+    })
   }
 
+  renderModalBody() {
+    console.log(this.state)
+    if (this.state.modalType === 'faq') {
+      return (
+        <div>
+          {this.state.faq.find(f => f.soc_id === this.state.societies[this.state.openSocIndex].soc_id).question}
+          <br /> <br />
+          {this.state.faq.find(f => f.soc_id === this.state.societies[this.state.openSocIndex].soc_id).answer}
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          {this.state.societies[this.state.openSocIndex].detail}
+        </div>
+      )
+    }
+  }
 
   renderAllCats() {
     return (
@@ -109,9 +153,11 @@ export default class Societies extends React.Component {
                   <Card.Title>{cat.name}</Card.Title>
                   <Card.Text><i>{cat.desc}</i></Card.Text>
                   <Card.Img src={cat.logo} style={{ width: '50%' }} align='right'></Card.Img>
-                  <Button variant="primary" onClick={() => this.setState({ show: true, openSocIndex: i })}>View society</Button>
+                  <Button variant="primary" onClick={() => this.setState({ show: true, openSocIndex: i, modalType: "vsoc" })}>View society</Button>
                   <br /><br />
                   <Button variant="success" onClick={() => this.followSociety(i)}>Follow society</Button>
+                  <br /><br />
+                  <Button variant="secondary" onClick={() => this.setState({ show: true, openSocIndex: i, modalType: "faq" })}>View FAQ</Button>
                 </Card.Body>
               </Card>
               <Modal show={this.state.show} onHide={() => this.setState({ show: false })}>
@@ -124,7 +170,7 @@ export default class Societies extends React.Component {
                 </Modal.Title>
 
               </Modal.Header>
-              <Modal.Body>{this.state.societies[this.state.openSocIndex].detail}</Modal.Body>
+              <Modal.Body>{this.renderModalBody()}</Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={() => this.setState({ show: false })}>
                   Close
@@ -149,9 +195,11 @@ export default class Societies extends React.Component {
             <Card.Title>{soc.name}</Card.Title>
             <Card.Text><i>{soc.desc}</i></Card.Text>
             <Card.Img src={soc.logo} style={{ width: '50%' }} align='right'></Card.Img>
-            <Button variant="primary" onClick={() => this.setState({ show: true, openSocIndex: socIndex })}>View society</Button>
+            <Button variant="primary" onClick={() => this.setState({ show: true, openSocIndex: socIndex, modalType: "vsoc" })}>View society</Button>
             <br /><br />
             <Button variant="success" onClick={() => this.followSociety(socIndex)}>Follow society</Button>
+            <br /><br />
+            <Button variant="secondary" onClick={() => this.setState({ show: true, openSocIndex: socIndex, modalType: "faq" })}>View FAQ</Button>
           </Card.Body>
         </Card>
         <Modal show={this.state.show} onHide={() => this.setState({ show: false })}>
@@ -163,7 +211,7 @@ export default class Societies extends React.Component {
             </Modal.Title>
 
           </Modal.Header>
-          <Modal.Body>{this.state.societies[this.state.openSocIndex].detail}</Modal.Body>
+          <Modal.Body>{this.renderModalBody()}</Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => this.setState({ show: false })}>
               Close
@@ -190,9 +238,11 @@ export default class Societies extends React.Component {
                   <Card.Title>{soc.name}</Card.Title>
                   <Card.Text><i>{soc.desc}</i></Card.Text>
                   <Card.Img src={soc.logo} style={{ width: '50%' }} align='right'></Card.Img>
-                  <Button variant="primary" onClick={() => this.setState({ show: true, openSocIndex: i })}>View society</Button>
+                  <Button variant="primary" onClick={() => this.setState({ show: true, openSocIndex: i, modalType: "vsoc" })}>View society</Button>
                   <br /><br />
                   <Button variant="success" onClick={() => this.followSociety(i)}>Follow society</Button>
+                  <br /><br />
+                  <Button variant="secondary" onClick={() => this.setState({ show: true, openSocIndex: i, modalType: "faq" })}>View FAQ</Button>
                 </Card.Body>
               </Card>
               <Modal show={this.state.show} onHide={() => this.setState({ show: false })}>
@@ -204,7 +254,7 @@ export default class Societies extends React.Component {
                 </Modal.Title>
 
               </Modal.Header>
-              <Modal.Body>{this.state.societies[this.state.openSocIndex].detail}</Modal.Body>
+              <Modal.Body>{this.renderModalBody()}</Modal.Body>
               <Modal.Footer>
                 <Button variant="secondary" onClick={() => this.setState({ show: false })}>
                   Close
