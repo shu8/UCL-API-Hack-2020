@@ -31,7 +31,6 @@ export default class Events extends React.Component {
   }
 
   componentDidMount() {
-    // TODO call API, get societies, store in state
     apiGet('events', result => {
       console.log('events', result);
       this.setState({

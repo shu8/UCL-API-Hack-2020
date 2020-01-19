@@ -4,10 +4,8 @@ import {
   Button,
   Modal
 } from "react-bootstrap"
-import apiGet from './API';
 
 import apiGet from "./API";
-import * as Constants from "./Constants"
 
 export default class Societies extends React.Component {
   constructor(props) {
@@ -67,7 +65,7 @@ export default class Societies extends React.Component {
           logo: "/uclsslogo.png"
         },
         {
-          name: "Music",
+          name: "Arts",
           logo: "/uclsslogo.png"
         },
         {
@@ -75,7 +73,7 @@ export default class Societies extends React.Component {
           logo: "/uclsslogo.png"
         },
         {
-          name: "Educational",
+          name: "Academic Related",
           logo: "/uclsslogo.png"
         },
         {
@@ -100,7 +98,6 @@ export default class Societies extends React.Component {
   }
 
   renderModalBody() {
-    console.log(this.state)
     if (this.state.modalType === 'faq') {
       return (
         <div>
