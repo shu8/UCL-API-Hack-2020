@@ -63,7 +63,7 @@ router.post('/societies', isLoggedIn, (req, res) => {
 });
 
 router.get('/societies/category/:category', (req, res) => {
-  req.app.locals.connection.query('SELECT * FROM events WHERE category LIKE ?', ['%' + req.params.category + '%'], (error, results) => {
+  req.app.locals.connection.query('SELECT * FROM societies WHERE category LIKE ?', ['%' + req.params.category + '%'], (error, results) => {
     if (error) throw error.message;
 
     res.json(results);
@@ -82,19 +82,20 @@ router.get('/events/:id(\\d+)', (req, res) => {
   req.app.locals.connection.query('SELECT * FROM events WHERE id=? ORDER BY datetime DESC', [req.params.id], (error, results) => {
     if (error) throw error.message;
 
-    res.json(results[0]);
+    res.json(results);
   });
 });
 
 router.post('/events', isLoggedIn, (req, res) => {
-  req.app.locals.connection.query('INSERT INTO events (society_id, name, summary, description, image, category) VALUES (?, ?, ?, ?, ?, ?)', [
+  req.app.locals.connection.query('INSERT INTO events (society_id, name, summary, description, image, category, datetime) VALUES (?, ?, ?, ?, ?, ?, ?)', [
     req.body.society_id,
     req.body.name,
     req.body.summary,
     req.body.description,
     req.body.image,
-    req.body.category
-  ], (error) => {
+    req.body.category,
+    req.body.datetime
+  ], (error, results) => {
     if (error) throw error.message;
 
     return res.json({
@@ -117,11 +118,12 @@ router.post('/societies/:id(\\d+)/faqs', (req, res) => {
     req.param.society_id,
     req.body.question,
     req.body.answer
-  ], (error) => {
+  ], (error, results) => {
     if (error) throw error.message;
 
     return res.json({
-      success: true
+      success: true,
+      faq_id: results.insertId
     });
   });
 });
