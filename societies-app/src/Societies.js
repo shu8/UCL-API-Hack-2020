@@ -297,8 +297,10 @@ export default class Societies extends React.Component {
   }
 
   renderSoc(desiredSoc) {
-    const socIndex = this.state.societies.findIndex(s => s.id === desiredSoc);
+    console.log(desiredSoc)
+    const socIndex = this.state.societies.findIndex(s => s.id == desiredSoc);
     const soc = this.state.societies[socIndex];
+    if (!soc) return <div />;
     return (
       <div>
         {this.socCard(soc, socIndex)}

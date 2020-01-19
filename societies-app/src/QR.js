@@ -15,6 +15,7 @@ export default class QR extends React.Component {
   handleScan = data => {
     if (!data) return;
 
+    console.log(data);
     this.setState({
       result: data
     });

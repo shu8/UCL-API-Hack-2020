@@ -46,11 +46,12 @@ export default function SocietiesApp() {
           }} />
 
           <Route
-            path="/societies/:category"
+            exact path="/societies/id/:id"
             component={Societies}
           />
+
           <Route
-            path="/societies/id/:id"
+            path="/societies/:category"
             component={Societies}
           />
           <Route path="/societies"
