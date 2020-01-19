@@ -11,6 +11,8 @@ import Home from "./Home";
 import Societies from "./Societies";
 import Events from "./Events";
 import Admin from "./Admin";
+import Interests from "./Interests";
+import QR from "./QR";
 
 export default function SocietiesApp() {
   return (
@@ -20,6 +22,7 @@ export default function SocietiesApp() {
         <Link className="navbar" to="/societies">Societies</Link>
         <Link className="navbar" to="/events">Events</Link>
         <Link className="navbar" to="/logout">Logout</Link>
+        <Link className= "navbar" to="/qr">QR</Link>
         <hr />
 
         <Switch>
@@ -35,6 +38,8 @@ export default function SocietiesApp() {
           <Route exact path="/">
             <Home />
           </Route>
+
+          <Route exact path="/qr" component={QR} />
 
           <Route exact path="/logout" render={props => {
             window.sessionStorage.removeItem('sessionId');
