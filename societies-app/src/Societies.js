@@ -5,7 +5,7 @@ import {
   Modal
 } from "react-bootstrap"
 
-export default class Interests extends React.Component {
+export default class Societies extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

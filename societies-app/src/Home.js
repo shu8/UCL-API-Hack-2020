@@ -4,7 +4,7 @@ import {
   Card,
   Button
 } from 'react-bootstrap';
-import Societies from "./Interests";
+import Societies from "./Societies";
 
 export default class Home extends React.Component {
   constructor(props) {
