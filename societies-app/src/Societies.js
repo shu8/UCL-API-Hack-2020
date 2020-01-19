@@ -85,6 +85,7 @@ export default class Societies extends React.Component {
       ],
 
       events: [],
+      roles: [],
     }
   }
 
@@ -107,6 +108,13 @@ export default class Societies extends React.Component {
       console.log('events', result);
       this.setState({
         events: result,
+      });
+    });
+
+    API.apiGet('roles', result => {
+      console.log('roles', result);
+      this.setState({
+        roles: result,
       });
     });
   }
@@ -210,6 +218,7 @@ export default class Societies extends React.Component {
     } else {
       const soc = this.state.societies[this.state.openSocIndex];
       const events = this.state.events.filter(e => e.society_id == soc.id);
+      const roles = this.state.roles.filter(e => e.society_id == soc.id);
 
       return (
         <div>
@@ -231,7 +240,19 @@ export default class Societies extends React.Component {
                 ))}
               </div>
             ) : ''}
-
+          <hr />
+          <h4>Roles</h4>
+          {roles.length ?
+            roles.map(role => (
+              <p>
+                <strong>
+                  {role.name}
+                </strong>
+                <i>
+                  {role.role_description}
+                </i>
+              </p>
+            )) : <p>There are no roles for this society</p>}
         </div>
       )
     }
