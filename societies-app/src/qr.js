@@ -1,9 +1,7 @@
 import React from "react";
 import QrReader from 'react-qr-reader'
-import * as Constants from './Constants';
 import {
   Card,
-  Button
 } from 'react-bootstrap';
 
 export default class QR extends React.Component {
@@ -13,14 +11,14 @@ export default class QR extends React.Component {
       result: 'No result'
     }
   }
-  
+
   handleScan = data => {
-    if (data) {
-      this.setState({
-        result: data
-      })
-    }
-    this.props.history.push('/society/');
+    if (!data) return;
+
+    this.setState({
+      result: data
+    });
+    this.props.history.push('/societies/id/' + data);
   }
   handleError = err => {
     console.error(err)
@@ -47,7 +45,7 @@ export default class QR extends React.Component {
           </Card.Body>
         </Card>
       </div>
-      
+
     );
   }
 }

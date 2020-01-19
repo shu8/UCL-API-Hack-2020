@@ -11,7 +11,6 @@ import Home from "./Home";
 import Societies from "./Societies";
 import Events from "./Events";
 import Admin from "./Admin";
-import Interests from "./Interests";
 import QR from "./QR";
 
 export default function SocietiesApp() {
@@ -48,6 +47,10 @@ export default function SocietiesApp() {
 
           <Route
             path="/societies/:category"
+            component={Societies}
+          />
+          <Route
+            path="/societies/id/:id"
             component={Societies}
           />
           <Route path="/societies"
