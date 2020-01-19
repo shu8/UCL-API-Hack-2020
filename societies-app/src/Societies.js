@@ -15,16 +15,19 @@ export default class Societies extends React.Component {
       societies: [{
         name: "s1",
         desc: "s1 desc",
+        categories: ["Technology", "Medicine"],
         detail: "s1 detailed summary",
         logo: "/uclsslogo.png"
       }, {
         name: "s2",
         desc: "s2 desc",
+        categories: ["Medicine"],
         detail: "s2 detailed summary",
         logo: "/uclsslogo.png"
       }, {
         name: "s3",
         desc: "s3 desc",
+        categories: ["Sports"],
         detail: "s3 detailed summary",
         logo: "/uclsslogo.png"
       }],
@@ -94,15 +97,39 @@ export default class Societies extends React.Component {
           Societies
           {` (${this.props.match.params.category})`}
         </h1>
-        {this.state.categories.filter(cat => cat.name == desiredCat).map((cat, i) => {
+        {this.state.societies.filter(soc => soc.categories.includes(desiredCat)).map((cat, i) => {
           return (
-            <Card bg="light" style={{ width: '100%' }} onClick={() => this.props.history.push(`/societies/${cat.name}`)}>
-              <Card.Body>
-                <Card.Title>{cat.name}</Card.Title>
-                <Card.Img src={cat.logo} style={{ width: '50%' }} align='right'></Card.Img>
-              </Card.Body>
-            </Card>
-          );
+            <div>
+              <Card>
+                <Card variant="top" src="holder.js/100px180" />
+                <Card.Body>
+                  <Card.Title>{cat.name}</Card.Title>
+                  <Card.Text><i>{cat.desc}</i></Card.Text>
+                  <Card.Img src={cat.logo} style={{ width: '50%' }} align='right'></Card.Img>
+                  <Button variant="primary" onClick={() => this.setState({ show: true, openSocIndex: i })}>View society</Button>
+                  <br /><br />
+                  <Button variant="success" onClick={() => this.followSociety(i)}>Follow society</Button>
+                </Card.Body>
+              </Card>
+              <Modal show={this.state.show} onHide={() => this.setState({ show: false })}>
+                <Modal.Header closeButton>
+
+                <Modal.Title>
+                  {this.state.societies[this.state.openSocIndex].name}
+                  <img src={this.state.societies[this.state.openSocIndex].logo} style={{ width: '25%', float: 'right' }} />
+
+                </Modal.Title>
+
+              </Modal.Header>
+              <Modal.Body>{this.state.societies[this.state.openSocIndex].detail}</Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={() => this.setState({ show: false })}>
+                  Close
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </div>
+          )
         })}
       </div>
     );
