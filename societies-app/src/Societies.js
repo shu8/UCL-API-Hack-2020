@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Card,
-    Button, 
+    Button,
     Modal
 } from "react-bootstrap"
 
@@ -10,7 +10,7 @@ export default class Societies extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            show: false, 
+            show: false,
             openSocIndex: 0,
             eventsForOpenSoc :[],
 
@@ -33,6 +33,11 @@ export default class Societies extends React.Component {
         }
     }
 
+    followSociety(socIndex) {
+        console.log(socIndex);
+        // TODO API call, with followed society id
+    }
+
     componentDidMount() {
         // TODO API call, set setState({societies: [api result]})
     }
@@ -52,13 +57,15 @@ export default class Societies extends React.Component {
                                 <Card.Title>{soc.name}</Card.Title>
                                 <Card.Text><i>{soc.desc}</i></Card.Text>
                                 <Card.Img  src= {soc.logo} style= {{width: '50%'}} align = 'right'></Card.Img>
-                                <Button variant="primary" onClick = {() => this.setState({show: true, openSocIndex: i})}>View society</Button>
+                                <Button variant="primary" onClick={() => this.setState({ show: true, openSocIndex: i })}>View society</Button>
+                                <br /><br />
+                                <Button variant="success" onClick={() => this.followSociety(i)}>Follow society</Button>
                             </Card.Body>
                         </Card>
-                        
+
                     )
                 })}
-                
+
                 <Modal show={this.state.show} onHide={() => this.setState({show: false})}>
                     <Modal.Header closeButton>
 
