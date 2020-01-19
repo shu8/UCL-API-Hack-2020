@@ -14,7 +14,7 @@ export default class Events extends React.Component{
                     event_name : "Sign Language Lesson 4",
                     society : "Sign Language Society",
                     date : "12/2/20",
-                    event_preview : "Learn  some sign language in a relaxed setting!"
+                    event_preview : "Learn some sign language in a relaxed setting!"
                 },
                 {
                     event_name : "Ratatouille Screening",
