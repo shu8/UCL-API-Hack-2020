@@ -65,14 +65,36 @@ export default class Societies extends React.Component {
     // TODO call API, get societies, store in state
   }
 
-  renderCat() {
+  
+  renderAllCats() {
     return (
-      <div>
+      <div>       
         <h1 style={{ textAlign: 'center' }}>
           Societies
           <Button variant="primary" className="float-right" onClick={() => this.setState({ view_mode: "all"})}>Toggle</Button>
         </h1>
         {this.state.categories.map((cat, i) => {
+          return (
+            <Card bg="light" style={{ width: '100%' }} onClick={() => this.props.history.push(`/societies/${cat.name}`)}>
+              <Card.Body>
+                <Card.Title>{cat.name}</Card.Title>
+                <Card.Img src={cat.logo} style={{ width: '50%' }} align='right'></Card.Img>
+              </Card.Body>
+            </Card>
+          );
+        })}
+      </div>
+    );
+  }
+
+  renderCat(desiredCat) {
+    return (
+      <div>
+        <h1 style={{ textAlign: 'center' }}>
+          Societies
+          {` (${this.props.match.params.category})`}
+        </h1>
+        {this.state.categories.filter(cat => cat.name == desiredCat).map((cat, i) => {
           return (
             <Card bg="light" style={{ width: '100%' }} onClick={() => this.props.history.push(`/societies/${cat.name}`)}>
               <Card.Body>
@@ -142,17 +164,10 @@ export default class Societies extends React.Component {
   render() {
     const { view_mode } = this.state //destucture state
     if (this.props.match.params.category) {
-      return (
-        <div>
-          <h1 style={{ textAlign: 'center' }}>
-            Societies
-            {` (${this.props.match.params.category})`}
-          </h1>
-        </div>
-      )
+      return this.renderCat(this.props.match.params.category);
     } else {
       if (view_mode=="categories") {
-        return this.renderCat();
+        return this.renderAllCats();
       } else if(view_mode=="all") {
         return this.renderAll();
       }
